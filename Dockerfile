@@ -24,6 +24,9 @@ WORKDIR /app
 COPY package.json .
 RUN npm install --quiet
 
+### Adicionando módulos node para o path do container
+ENV PATH="/app/node_modules/.bin:${PATH}"
+
 ### Copiando projeto para dentro do docker ###
 COPY . .
 
