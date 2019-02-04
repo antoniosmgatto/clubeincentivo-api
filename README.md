@@ -18,3 +18,9 @@ Para acessar o container do app via bash:
 ```
 docker exec -it clubeincentivo-api bash
 ```
+
+Para acessar o console da aplicação, execute:
+
+```
+  node console
+```
