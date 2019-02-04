@@ -8,6 +8,7 @@
     "start:debug": "node --inspect ./bin/www"
   },
   "dependencies": {
+    "cpf_cnpj": "^0.2.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "faker": "^4.1.0",
