@@ -10,7 +10,7 @@ Para iniciar o projeto, execute o seguinte comando na raiz do projeto:
 ./build.sh
 docker-compose run --rm app node_modules/.bin/sequelize db:migrate
 docker-compose run --rm app node_modules/.bin/sequelize db:seed:all
-curl http://localhost:3000/projects
+curl http://localhost:3000/sales
 ```
 
 Para acessar o container do app via bash:
