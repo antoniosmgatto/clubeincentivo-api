@@ -40,7 +40,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     tableName: "sales",
-    version: true
+    version: true,
+    defaultScope: {
+      attributes: [ 'id', 'cfe', 'clientDocument', 'purchaseDate', 'total', 'createdAt', 'updatedAt', 'version']
+    }
   });
   Sale.associate = function(models) {
     Sale.hasMany(models.SaleItem, {as: "items", onDelete: "cascade"})
