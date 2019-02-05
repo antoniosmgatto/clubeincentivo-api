@@ -23,7 +23,7 @@ module.exports = {
         sale_items.push({
           code: "001",
           description: "Item 1",
-          amount: 1.0,
+          quantity: 1.0,
           sale_id: i,
           created_at: new Date(),
           updated_at: new Date()
