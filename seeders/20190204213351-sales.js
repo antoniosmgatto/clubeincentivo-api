@@ -24,6 +24,7 @@ module.exports = {
           code: "001",
           description: "Item 1",
           quantity: 1.0,
+          price: 10.0,
           sale_id: i,
           created_at: new Date(),
           updated_at: new Date()

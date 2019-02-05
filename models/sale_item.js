@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false
     },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
     saleId: {
       type: DataTypes.INTEGER,
       field: "sale_id",
