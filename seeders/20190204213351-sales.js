@@ -14,6 +14,7 @@ module.exports = {
         cfe: Faker.random.number(),
         client_document: CPF.generate(),
         purchase_date: Faker.date.past(),
+        total: 0.0,
         created_at: new Date(),
         updated_at: new Date(),
         version: 0

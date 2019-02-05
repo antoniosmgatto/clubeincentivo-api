@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false
     },
+    total: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: "created_at"
