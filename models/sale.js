@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     version: true
   });
   Sale.associate = function(models) {
-    Sale.hasMany(models.SaleItem, {as: "items"})
+    Sale.hasMany(models.SaleItem, {as: "items", onDelete: "cascade"})
   };
   return Sale;
 };
