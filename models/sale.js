@@ -6,10 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define('Sale', {
     cfe: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     clientDocument: {
-      type: DataTypes.STRING,
       field: "client_document",
+      type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         isCpfValid() {
           if (!CPF.isValid(this.clientDocument)) {
@@ -19,8 +21,17 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     purchaseDate: {
+      field: "purchase_date",
       type: DataTypes.DATE,
-      field: "purchase_date"
+      allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: "created_at"
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: "updated_at"
     }
   }, {
     freezeTableName: true,

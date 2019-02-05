@@ -19,7 +19,11 @@ module.exports = {
       },
       saleId: {
         type: Sequelize.INTEGER,
-        field: "sale_id"
+        field: "sale_id",
+        references: {
+          model: "sales",
+          key: "id"
+        }
       },
       createdAt: {
         allowNull: false,
