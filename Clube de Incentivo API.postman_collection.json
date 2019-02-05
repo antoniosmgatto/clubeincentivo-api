@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "936bb0ce-70a9-47e4-a0a9-fc571881fb10",
+		"name": "Clube de Incentivo API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sales list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/sales?page=1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"sales"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sales create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cfe\": \"001\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/sales",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"sales"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sales show",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n \t\n }"
+				},
+				"url": {
+					"raw": "{{API_URL}}/sales/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"sales",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sale update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cfe\": \"002\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/sales/6",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"sales",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sales delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/sales/4",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"sales",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "579ebb0f-84e3-4dfc-ba2a-e78e3ccb2cd6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "04eedee4-b533-416e-8dce-29916e68c537",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
