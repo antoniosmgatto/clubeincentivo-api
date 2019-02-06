@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     tableName: 'sale_items',
-    version: false,
     defaultScope: {
       attributes: ['id', 'code', 'description', 'quantity', 'price', 'saleId', 'createdAt', 'updatedAt'],
     },

@@ -3,24 +3,21 @@
     "dialect": "postgres",
     "use_env_variable": "DATABASE_URL",
     "define": {
-      "underscored": true,
-      "version": true
+      "underscored": true
     }
   },
   "test": {
     "dialect": "postgres",
     "use_env_variable": "DATABASE_URL",
     "define": {
-      "underscored": true,
-      "version": true
+      "underscored": true
     }
   },
   "production": {
     "dialect": "postgres",
     "use_env_variable": "DATABASE_URL",
     "define": {
-      "underscored": true,
-      "version": true
+      "underscored": true
     }
   }
 }
