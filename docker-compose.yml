@@ -13,7 +13,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - RAILS_ENV=development
       - DATABASE_URL=postgres://postgres:postgres@db:5432/clubeincentivo_dev
     depends_on:
       - db
