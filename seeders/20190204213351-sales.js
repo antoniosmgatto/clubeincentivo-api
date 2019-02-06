@@ -1,5 +1,5 @@
 const Faker = require('faker');
-const { CPF } = require('cpf_cnpj');
+const CPF = require('@fnando/cpf/dist/node');
 
 module.exports = {
   // eslint-disable-next-line no-unused-vars

@@ -1,6 +1,4 @@
-
-
-const CPF = require('cpf_cnpj');
+const CPF = require('@fnando/cpf/dist/node');
 
 module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define('Sale', {

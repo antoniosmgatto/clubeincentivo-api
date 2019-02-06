@@ -12,7 +12,7 @@
     "node": "10.15.0"
   },
   "dependencies": {
-    "cpf_cnpj": "^0.2.0",
+    "@fnando/cpf": "^0.1.1",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "faker": "^4.1.0",
