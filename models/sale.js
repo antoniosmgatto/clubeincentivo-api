@@ -1,52 +1,53 @@
-'use strict';
 
-var CPF = require("cpf_cnpj").CPF;
+
+const CPF = require('cpf_cnpj');
 
 module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define('Sale', {
     cfe: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     clientDocument: {
-      field: "client_document",
+      field: 'client_document',
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         isCpfValid() {
           if (!CPF.isValid(this.clientDocument)) {
-            throw new Error("It's not a valid client document")
+            throw new Error("It's not a valid client document");
           }
-        }
-      }
+        },
+      },
     },
     purchaseDate: {
-      field: "purchase_date",
+      field: 'purchase_date',
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
     },
     total: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
-      field: "created_at"
+      field: 'created_at',
     },
     updatedAt: {
       type: DataTypes.DATE,
-      field: "updated_at"
-    }
+      field: 'updated_at',
+    },
   }, {
     freezeTableName: true,
-    tableName: "sales",
+    tableName: 'sales',
     version: true,
     defaultScope: {
-      attributes: [ 'id', 'cfe', 'clientDocument', 'purchaseDate', 'total', 'createdAt', 'updatedAt', 'version']
-    }
+      attributes: ['id', 'cfe', 'clientDocument', 'purchaseDate', 'total', 'createdAt', 'updatedAt', 'version'],
+    },
   });
-  Sale.associate = function(models) {
-    Sale.hasMany(models.SaleItem, {as: "items", onDelete: "cascade"})
+  // eslint-disable-next-line func-names
+  Sale.associate = function (models) {
+    Sale.hasMany(models.SaleItem, { as: 'items', onDelete: 'cascade' });
   };
   return Sale;
 };

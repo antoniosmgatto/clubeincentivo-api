@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var salesController = require('../controllers/sales');
+const express = require('express');
+
+const router = express.Router();
+const salesController = require('../controllers/sales');
 
 router.get('/', salesController.index);
 router.post('/', salesController.create);

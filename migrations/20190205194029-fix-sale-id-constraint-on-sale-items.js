@@ -1,22 +1,23 @@
-'use strict';
+
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    queryInterface.removeConstraint('sale_items', 'sale_items_sale_id_fkey', {})
+  // eslint-disable-next-line no-unused-vars
+  up: (queryInterface, _Sequelize) => {
+    queryInterface.removeConstraint('sale_items', 'sale_items_sale_id_fkey', {});
     return queryInterface.addConstraint('sale_items', ['sale_id'],
       {
         type: 'foreign key',
-        field: "sale_items_sale_id_fkey",
+        field: 'sale_items_sale_id_fkey',
         references: {
-          table: "sales",
-          field: "id"
+          table: 'sales',
+          field: 'id',
         },
         onDelete: 'cascade',
-        onUpdate: 'cascade'
-      }
-    );
+        onUpdate: 'cascade',
+      });
   },
 
-  down: (queryInterface, Sequelize) => {
-  }
+  // eslint-disable-next-line no-unused-vars
+  down: (_queryInterface, _Sequelize) => {
+  },
 };

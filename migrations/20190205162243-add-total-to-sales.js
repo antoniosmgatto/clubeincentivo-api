@@ -1,11 +1,8 @@
-'use strict';
+
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('sales', 'total', { type: Sequelize.DECIMAL }, {});
-  },
+  up: (queryInterface, Sequelize) => queryInterface.addColumn('sales', 'total', { type: Sequelize.DECIMAL }, {}),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn('sales', 'total');
-  }
+  // eslint-disable-next-line no-unused-vars
+  down: (queryInterface, _Sequelize) => queryInterface.removeColumn('sales', 'total'),
 };

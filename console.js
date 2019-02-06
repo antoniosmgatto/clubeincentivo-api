@@ -26,15 +26,15 @@
  * app > (await User.findOne()).toJSON() // return {..user} json object
  */
 
-let repl = require('repl');
-let models = require('./models');
+const repl = require('repl');
+const models = require('./models');
 
-Object.keys(models).forEach(modelName => {
+Object.keys(models).forEach((modelName) => {
   global[modelName] = models[modelName];
 });
 
-let replServer = repl.start({
-  prompt: 'app > '
+const replServer = repl.start({
+  prompt: 'app > ',
 });
 
 replServer.context.db = models;
