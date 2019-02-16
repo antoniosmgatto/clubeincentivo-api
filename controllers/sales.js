@@ -32,7 +32,7 @@ module.exports = {
           },
         ],
       })
-      .then(sale => res.json(sale))
+      .then(sale => res.status(201).json(sale))
       .catch(exception => res.status(500).send(exception));
   },
   show(req, res) {
