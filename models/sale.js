@@ -2,7 +2,7 @@ const CPF = require('@fnando/cpf/dist/node');
 
 module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define('Sale', {
-    cfe: {
+    cfeId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'sales',
     version: true,
     defaultScope: {
-      attributes: ['id', 'cfe', 'clientDocument', 'purchaseDate', 'total', 'createdAt', 'updatedAt', 'version'],
+      attributes: ['id', 'cfeId', 'clientDocument', 'purchaseDate', 'total', 'createdAt', 'updatedAt', 'version'],
     },
   });
   // eslint-disable-next-line func-names

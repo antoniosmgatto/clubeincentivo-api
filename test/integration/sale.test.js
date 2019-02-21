@@ -11,7 +11,7 @@ const { Sale, SaleItem } = require('../../models');
 chai.use(chainHttp);
 
 const sale = {
-  cfe: '001',
+  cfeId: '001',
   clientDocument: '21511945079',
   purchaseDate: '2019-01-31',
   total: 10,
@@ -55,8 +55,8 @@ describe('/sales', () => {
           expect(res).to.have.status(201);
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.have.property('cfe');
-          expect(res.body.cfe).to.be.eq('001');
+          expect(res.body).to.have.property('cfeId');
+          expect(res.body.cfeId).to.be.eq('001');
           expect(res.body).to.have.property('clientDocument');
           expect(res.body.clientDocument).to.be.eq('21511945079');
           expect(res.body).to.have.property('purchaseDate');
@@ -93,8 +93,8 @@ describe('/sales', () => {
             expect(res).to.have.status(200);
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
-            expect(res.body).to.have.property('cfe');
-            expect(res.body.cfe).to.be.eq('001');
+            expect(res.body).to.have.property('cfeId');
+            expect(res.body.cfeId).to.be.eq('001');
             expect(res.body).to.have.property('clientDocument');
             expect(res.body.clientDocument).to.be.eq('21511945079');
             expect(res.body).to.have.property('purchaseDate');
@@ -129,7 +129,7 @@ describe('/sales', () => {
         chai.request(app)
           .put(`/sales/${saleSaved.id}`)
           .send({
-            cfe: '002',
+            cfeId: '002',
             clientDocument: '88600967074',
             purchaseDate: '2019-01-30',
             total: 11,
@@ -146,8 +146,8 @@ describe('/sales', () => {
             expect(res).to.have.status(200);
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
-            expect(res.body).to.have.property('cfe');
-            expect(res.body.cfe).to.be.eq('002');
+            expect(res.body).to.have.property('cfeId');
+            expect(res.body.cfeId).to.be.eq('002');
             expect(res.body).to.have.property('clientDocument');
             expect(res.body.clientDocument).to.be.eq('88600967074');
             expect(res.body).to.have.property('purchaseDate');

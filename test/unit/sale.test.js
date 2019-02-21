@@ -11,7 +11,7 @@ describe('models/sales', () => {
     expect(sale).to.be.a('object');
     expect(sale).to.be.instanceof(Sale);
     expect(sale).to.have.property('id');
-    expect(sale).to.have.property('cfe');
+    expect(sale).to.have.property('cfeId');
     expect(sale).to.have.property('clientDocument');
     expect(sale).to.have.property('purchaseDate');
     expect(sale).to.have.property('total');

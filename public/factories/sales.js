@@ -4,7 +4,7 @@ const Sale = require('../../models');
 
 const data = async (props = {}) => {
   const defaultProps = {
-    cfe: Faker.random.number(),
+    cfeId: Faker.random.number(),
     clientDocument: CPF.generate(),
     purchaseDate: Faker.date.past(),
     total: 10.0,

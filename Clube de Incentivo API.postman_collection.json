@@ -49,7 +49,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"cfe\": \"001\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
+					"raw": "{\n  \"cfeId\": \"CFe351811365640600019859000527528013297\",\n  \"clientDocument\": \"40741221896\",\n  \"purchaseDate\": \"2018-11-01T11:56:56\",\n  \"total\": 18,\n  \"items\": [\n    {\n      \"code\": \"1016\",\n      \"description\": \"FISH   CHIPS GRANDE\",\n      \"quantity\": 1,\n      \"price\": 17.99\n    },\n    {\n      \"code\": \"1005\",\n      \"description\": \"MOLHO BARBECUE\",\n      \"quantity\": 1,\n      \"price\": 0.01\n    }\n  ]\n}"
 				},
 				"url": {
 					"raw": "{{API_URL}}/sales",
@@ -105,7 +105,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"cfe\": \"002\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
+					"raw": "{\n\t\"cfId\": \"002\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
 				},
 				"url": {
 					"raw": "{{API_URL}}/sales/6",
