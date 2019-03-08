@@ -6,6 +6,16 @@ module.exports = {
   up: async (queryInterface, _Sequelize) => {
     const sales = [];
     const saleItems = [];
+
+    const companies = [
+      {
+        name: 'Company 1',
+        document: '19.393.471/0001-35',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ];
+
     for (let i = 1; i <= 100; i += 1) {
       sales.push({
         cfeId: Faker.random.number(),
@@ -29,6 +39,8 @@ module.exports = {
       }
     }
 
+    await queryInterface.bulkInsert('companies', companies, {});
+
     await queryInterface.bulkInsert('sales', sales, {});
 
     return queryInterface.bulkInsert('sale_items', saleItems, {});
@@ -36,7 +48,8 @@ module.exports = {
 
   // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('sales', null, {});
     await queryInterface.bulkDelete('sale_items', null, {});
+    await queryInterface.bulkDelete('sales', null, {});
+    await queryInterface.bulkDelete('companies', null, {});
   },
 };
