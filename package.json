@@ -13,8 +13,8 @@
     "node": "10.15.0"
   },
   "dependencies": {
-    "@fnando/cpf": "^0.1.1",
     "@fnando/cnpj": "^0.1.1",
+    "@fnando/cpf": "^0.1.1",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "faker": "^4.1.0",

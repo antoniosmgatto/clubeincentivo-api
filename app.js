@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
+const companiesRouter = require('./routes/companies');
 const salesRouter = require('./routes/sales');
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+// admin routes
+app.use('/adm/companies', companiesRouter);
 app.use('/sales', salesRouter);
 
 // catch 404 and forward to error handler
