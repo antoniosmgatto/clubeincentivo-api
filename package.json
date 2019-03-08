@@ -17,6 +17,7 @@
     "@fnando/cpf": "^0.1.1",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-basic-auth": "^1.1.6",
     "faker": "^4.1.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",

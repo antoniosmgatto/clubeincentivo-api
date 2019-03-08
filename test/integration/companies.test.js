@@ -26,6 +26,7 @@ describe('/adm/companies', () => {
       chai
         .request(app)
         .get('/adm/companies')
+        .auth('admin', process.env.ADM_PASSWD)
         .then((res) => {
           expect(res).to.have.status(200);
           expect(res).to.have.header(
@@ -46,6 +47,7 @@ describe('/adm/companies', () => {
       chai
         .request(app)
         .post('/adm/companies')
+        .auth('admin', process.env.ADM_PASSWD)
         .send(company)
         .then((res) => {
           expect(res).to.have.status(201);
@@ -56,9 +58,7 @@ describe('/adm/companies', () => {
           expect(res.body).to.have.property('name');
           expect(res.body.name).to.be.eq('Company 1');
           expect(res.body).to.have.property('document');
-          expect(res.body.document).to.be.eq(
-            '50.147.471/0001-03',
-          );
+          expect(res.body.document).to.be.eq('50.147.471/0001-03');
           expect(res.body).to.have.property('createdAt');
           expect(res.body).to.have.property('updatedAt');
           done();
@@ -72,6 +72,7 @@ describe('/adm/companies', () => {
         chai
           .request(app)
           .get(`/adm/companies/${companySaved.id}`)
+          .auth('admin', process.env.ADM_PASSWD)
           .then((res) => {
             expect(res).to.have.status(200);
             // eslint-disable-next-line no-unused-expressions
@@ -81,9 +82,7 @@ describe('/adm/companies', () => {
             expect(res.body).to.have.property('name');
             expect(res.body.name).to.be.eq('Company 1');
             expect(res.body).to.have.property('document');
-            expect(res.body.document).to.be.eq(
-              '50.147.471/0001-03',
-            );
+            expect(res.body.document).to.be.eq('50.147.471/0001-03');
             expect(res.body).to.have.property('createdAt');
             expect(res.body).to.have.property('updatedAt');
             done();
@@ -98,6 +97,7 @@ describe('/adm/companies', () => {
         chai
           .request(app)
           .put(`/adm/companies/${companySaved.id}`)
+          .auth('admin', process.env.ADM_PASSWD)
           .send({
             name: 'Company 2',
             document: '83.114.120/0001-47',
@@ -126,6 +126,7 @@ describe('/adm/companies', () => {
         chai
           .request(app)
           .delete(`/adm/companies/${companySaved.id}`)
+          .auth('admin', process.env.ADM_PASSWD)
           .then((res) => {
             expect(res).to.have.status(204);
             done();
