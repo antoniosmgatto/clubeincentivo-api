@@ -8,7 +8,7 @@ module.exports = {
     const saleItems = [];
     for (let i = 1; i <= 100; i += 1) {
       sales.push({
-        cfe: Faker.random.number(),
+        cfeId: Faker.random.number(),
         client_document: CPF.generate(),
         purchase_date: Faker.date.past(),
         total: 0.0,
