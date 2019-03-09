@@ -25,10 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       freezeTableName: true,
       tableName: 'pdv_tokens',
+      timestamps: false,
       hooks: {
         // eslint-disable-next-line no-unused-vars
         beforeValidate: (pdvToken, options) => {
           pdvToken.token = crypto.createHash('sha1').update(Math.random().toString(36)).digest('hex');
+          pdvToken.createdAt =  new Date();
         },
       },
       defaultScope: {
@@ -43,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   // eslint-disable-next-line func-names
   PdvToken.associate = function (models) {
-    PdvToken.belongsTo(models.Company);
+    PdvToken.belongsTo(models.Company, {as: 'company'});
   };
   return PdvToken;
 };
