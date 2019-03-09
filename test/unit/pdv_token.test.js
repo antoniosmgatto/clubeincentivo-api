@@ -13,6 +13,6 @@ describe('models/pdv_token', () => {
     expect(pdvToken).to.have.property('id');
     expect(pdvToken).to.have.property('name');
     expect(pdvToken).to.have.property('token');
-    expect(pdvToken).to.have.property('company_id');
+    expect(pdvToken).to.have.property('companyId');
   });
 });
