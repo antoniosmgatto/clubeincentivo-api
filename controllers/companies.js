@@ -10,7 +10,7 @@ module.exports = {
       order: [['id', 'ASC']],
       offset,
       limit,
-    }).then(companys => res.json(companys));
+    }).then(companies => res.json(companies));
   },
   create(req, res) {
     return Company.create(req.body)
