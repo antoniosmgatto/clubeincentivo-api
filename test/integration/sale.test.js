@@ -4,6 +4,7 @@
 const chai = require('chai');
 const chainHttp = require('chai-http');
 
+// eslint-disable-next-line prefer-destructuring
 const expect = chai.expect;
 const app = require('../../app');
 const { Sale, SaleItem } = require('../../models');
@@ -25,7 +26,7 @@ const sale = {
   ],
 };
 
-describe('/sales', () => {
+describe('/pdv/sales', () => {
   beforeEach(() => {
     // return require('../../models').sequelize.sync();
     Sale.destroy({ where: {}, force: true });
@@ -33,11 +34,16 @@ describe('/sales', () => {
 
   describe('/GET sales', () => {
     it('should GET all sales', (done) => {
-      chai.request(app)
-        .get('/sales')
+      chai
+        .request(app)
+        .get('/pdv/sales')
         .then((res) => {
           expect(res).to.have.status(200);
-          expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+          expect(res).to.have.header(
+            'content-type',
+            'application/json; charset=utf-8',
+          );
+          // eslint-disable-next-line no-unused-expressions
           expect(res).to.be.json;
           expect(res.body).to.be.a('array');
           expect(res.body.length).to.be.eq(0);
@@ -48,11 +54,13 @@ describe('/sales', () => {
 
   describe('/POST sale', () => {
     it('should create a new sale', (done) => {
-      chai.request(app)
-        .post('/sales')
+      chai
+        .request(app)
+        .post('/pdv/sales')
         .send(sale)
         .then((res) => {
           expect(res).to.have.status(201);
+          // eslint-disable-next-line no-unused-expressions
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
           expect(res.body).to.have.property('cfeId');
@@ -60,7 +68,9 @@ describe('/sales', () => {
           expect(res.body).to.have.property('clientDocument');
           expect(res.body.clientDocument).to.be.eq('21511945079');
           expect(res.body).to.have.property('purchaseDate');
-          expect(res.body.purchaseDate).to.be.eq('2019-01-31T00:00:00.000Z');
+          expect(res.body.purchaseDate).to.be.eq(
+            '2019-01-31T00:00:00.000Z',
+          );
           expect(res.body).to.have.property('total');
           expect(res.body.total).to.be.eq('10');
           expect(res.body).to.have.property('version');
@@ -87,10 +97,12 @@ describe('/sales', () => {
           },
         ],
       }).then((saleSaved) => {
-        chai.request(app)
-          .get(`/sales/${saleSaved.id}`)
+        chai
+          .request(app)
+          .get(`/pdv/sales/${saleSaved.id}`)
           .then((res) => {
             expect(res).to.have.status(200);
+            // eslint-disable-next-line no-unused-expressions
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.have.property('cfeId');
@@ -98,7 +110,9 @@ describe('/sales', () => {
             expect(res.body).to.have.property('clientDocument');
             expect(res.body.clientDocument).to.be.eq('21511945079');
             expect(res.body).to.have.property('purchaseDate');
-            expect(res.body.purchaseDate).to.be.eq('2019-01-31T00:00:00.000Z');
+            expect(res.body.purchaseDate).to.be.eq(
+              '2019-01-31T00:00:00.000Z',
+            );
             expect(res.body).to.have.property('total');
             expect(res.body.total).to.be.eq('10');
             expect(res.body).to.have.property('version');
@@ -126,8 +140,9 @@ describe('/sales', () => {
           },
         ],
       }).then((saleSaved) => {
-        chai.request(app)
-          .put(`/sales/${saleSaved.id}`)
+        chai
+          .request(app)
+          .put(`/pdv/sales/${saleSaved.id}`)
           .send({
             cfeId: '002',
             clientDocument: '88600967074',
@@ -144,6 +159,7 @@ describe('/sales', () => {
           })
           .then((res) => {
             expect(res).to.have.status(200);
+            // eslint-disable-next-line no-unused-expressions
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.have.property('cfeId');
@@ -151,7 +167,9 @@ describe('/sales', () => {
             expect(res.body).to.have.property('clientDocument');
             expect(res.body.clientDocument).to.be.eq('88600967074');
             expect(res.body).to.have.property('purchaseDate');
-            expect(res.body.purchaseDate).to.be.eq('2019-01-30T00:00:00.000Z');
+            expect(res.body.purchaseDate).to.be.eq(
+              '2019-01-30T00:00:00.000Z',
+            );
             expect(res.body).to.have.property('total');
             expect(res.body.total).to.be.eq(11);
             expect(res.body).to.have.property('version');
@@ -179,8 +197,9 @@ describe('/sales', () => {
           },
         ],
       }).then((saleSaved) => {
-        chai.request(app)
-          .delete(`/sales/${saleSaved.id}`)
+        chai
+          .request(app)
+          .delete(`/pdv/sales/${saleSaved.id}`)
           .then((res) => {
             expect(res).to.have.status(204);
             done();

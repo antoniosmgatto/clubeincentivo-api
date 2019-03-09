@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   // eslint-disable-next-line func-names
   Company.associate = function (models) {
-    // Company.hasMany(models.Sale, { as: 'sales' });
+    Company.hasMany(models.Sale, { as: 'sales' });
     Company.hasMany(models.PdvToken, { onDelete: 'cascade' });
   };
   return Company;

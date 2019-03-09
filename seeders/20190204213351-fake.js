@@ -1,5 +1,6 @@
 const Faker = require('faker');
 const CPF = require('@fnando/cpf/dist/node');
+const { Company } = require('../models')
 
 module.exports = {
   // eslint-disable-next-line no-unused-vars
@@ -7,14 +8,11 @@ module.exports = {
     const sales = [];
     const saleItems = [];
 
-    const companies = [
+    const company = Company.create(
       {
         name: 'Company 1',
-        document: '19.393.471/0001-35',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ];
+        document: '19.393.471/0001-35'
+      });
 
     for (let i = 1; i <= 100; i += 1) {
       sales.push({
@@ -22,6 +20,7 @@ module.exports = {
         client_document: CPF.generate(),
         purchase_date: Faker.date.past(),
         total: 0.0,
+        company_id: company.id,
         created_at: new Date(),
         updated_at: new Date(),
         version: 0,
@@ -38,8 +37,6 @@ module.exports = {
         });
       }
     }
-
-    await queryInterface.bulkInsert('companies', companies, {});
 
     await queryInterface.bulkInsert('sales', sales, {});
 
