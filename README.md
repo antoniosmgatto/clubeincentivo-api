@@ -24,3 +24,9 @@ Para acessar o console da aplicação, execute:
 ```
   node console
 ```
+
+Para executar os testes:
+
+```
+ docker-compose run -e NODE_ENV=test --rm app npm test
+```
