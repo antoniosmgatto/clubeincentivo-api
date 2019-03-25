@@ -4,7 +4,15 @@ Api desenvolvida em Node v10
 
 ### Dev
 
-Para iniciar o projeto, execute o seguinte comando na raiz do projeto:
+Antes de executar o projeto, defina as variáveis de ambiente conforme exemplo abaixo:
+
+```
+  export CLUBE_INVENTIVO_FIREBASE_API_KEY="apikey"
+  export CLUBE_INVENTIVO_FIREBASE_AUTH_DOMAIN="example.firebaseapp.com"
+  export CLUBE_INVENTIVO_FIREBASE_DATABASE_URL="https://example.firebaseapp.com"
+```
+
+Para inicializar o projeto:
 
 ```
 ./build.sh
@@ -22,7 +30,7 @@ docker exec -it clubeincentivo-api bash
 Para acessar o console da aplicação, execute:
 
 ```
-  node console
+  docker-compose run --rm app node console
 ```
 
 Para executar os testes:

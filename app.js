@@ -5,11 +5,12 @@ const logger = require('morgan');
 const basicAuth = require('express-basic-auth');
 const passport = require('passport');
 const LocalAPIKeyStrategy = require('passport-localapikey').Strategy;
+const firebase = require('firebase');
 
 const indexRouter = require('./routes/index');
 const companiesRouter = require('./routes/companies');
 const salesRouter = require('./routes/sales');
-const customersRouter = require("./routes/customers");
+const customersRouter = require('./routes/customers');
 const { Company, PdvToken } = require('./models');
 
 const app = express();
@@ -60,7 +61,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
-app.use("/customers", customersRouter);
+app.use('/customers', customersRouter);
 // admin routes
 app.use('/adm/companies', companiesRouter);
 app.use('/pdv-client/sales', salesRouter);
@@ -83,5 +84,13 @@ app.use((err, req, res, _next) => {
 });
 
 module.exports = app;
+
+// setup firebase
+const config = {
+  apiKey: process.env.CLUBE_INVENTIVO_FIREBASE_API_KEY,
+  authDomain: process.env.CLUBE_INVENTIVO_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.CLUBE_INVENTIVO_FIREBASE_DATABASE_URL,
+};
+firebase.initializeApp(config);
 
 passport.authenticate('basic', { session: false });
