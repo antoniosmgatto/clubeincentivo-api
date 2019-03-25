@@ -17,6 +17,7 @@ const payload = {
   email: 'example@gmail.com',
   phoneNumber: '41999999999',
   birthday: '1989-11-30',
+  ui: '35181130656406000198590005275280148495749148',
 };
 
 describe('/customer', () => {
@@ -49,6 +50,10 @@ describe('/customer', () => {
           expect(res.body).to.have.property('birthday');
           expect(res.body.birthday).to.be.eq(
             '1989-11-30T00:00:00.000Z',
+          );
+          expect(res.body).to.have.property('uid');
+          expect(res.body.uid).to.be.eq(
+            '35181130656406000198590005275280148495749148',
           );
           done();
         });

@@ -16,5 +16,6 @@ describe('models/customer', () => {
     expect(customer).to.have.property('email');
     expect(customer).to.have.property('phoneNumber');
     expect(customer).to.have.property('birthday');
+    expect(customer).to.have.property('uid');
   });
 });

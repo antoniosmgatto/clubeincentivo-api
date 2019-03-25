@@ -60,6 +60,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      uid: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          args: true,
+          msg: 'UID already in use.',
+        },
+      },
     },
     {
       freezeTableName: true,
