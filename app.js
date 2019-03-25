@@ -9,6 +9,7 @@ const LocalAPIKeyStrategy = require('passport-localapikey').Strategy;
 const indexRouter = require('./routes/index');
 const companiesRouter = require('./routes/companies');
 const salesRouter = require('./routes/sales');
+const customersRouter = require("./routes/customers");
 const { Company, PdvToken } = require('./models');
 
 const app = express();
@@ -59,6 +60,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
+app.use("/customers", customersRouter);
 // admin routes
 app.use('/adm/companies', companiesRouter);
 app.use('/pdv-client/sales', salesRouter);
