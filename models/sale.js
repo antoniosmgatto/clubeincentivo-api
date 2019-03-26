@@ -1,4 +1,5 @@
 const CPF = require('@fnando/cpf/dist/node');
+const moment = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define(
@@ -64,6 +65,15 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true,
       tableName: 'sales',
       version: true,
+      hooks: {
+        // eslint-disable-next-line no-unused-vars
+        beforeValidate: (sale, options) => {
+          if (sale.total != null) {
+            sale.cashback = sale.total * 0.10; // only 10% for now
+            sale.cashbackDate = moment().day(7); // cashback only after 7 days for now
+          }
+        }
+      },
       defaultScope: {
         attributes: [
           'id',
