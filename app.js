@@ -83,8 +83,6 @@ app.use((err, req, res, _next) => {
   res.render('error');
 });
 
-module.exports = app;
-
 // setup firebase
 const config = {
   apiKey: process.env.CLUBE_INVENTIVO_FIREBASE_API_KEY,
@@ -94,3 +92,5 @@ const config = {
 firebase.initializeApp(config);
 
 passport.authenticate('basic', { session: false });
+
+module.exports = app;

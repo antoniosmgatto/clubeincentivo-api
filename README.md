@@ -38,3 +38,9 @@ Para executar os testes:
 ```
  docker-compose run -e NODE_ENV=test --rm app npm test
 ```
+
+Para acessar o Redis
+
+```
+docker-compose run --rm redis redis-cli -h redis
+```

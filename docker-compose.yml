@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 services:
   app:
     container_name: clubeincentivo-api
@@ -14,11 +14,13 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/clubeincentivo_dev
       - ADM_PASSWD=passwd
+      - REDIS_URL=redis://redis:6379
       - CLUBE_INVENTIVO_FIREBASE_API_KEY
       - CLUBE_INVENTIVO_FIREBASE_AUTH_DOMAIN
       - CLUBE_INVENTIVO_FIREBASE_DATABASE_URL
     depends_on:
       - db
+      - redis
   db:
     image: postgres:10
     container_name: clubeincentivo-db
@@ -30,6 +32,11 @@ services:
     environment:
       - POSTGRES_DB=clubeincentivo_dev
       - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis:5
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   db_data:
