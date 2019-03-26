@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      uid: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          args: true,
+          msg: 'UID already in use.',
+        },
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: 'created_at',
@@ -38,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
           'id',
           'name',
           'document',
+          'uid',
           'createdAt',
           'updatedAt',
         ],
