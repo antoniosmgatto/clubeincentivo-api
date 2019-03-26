@@ -27,11 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
-    companyId: {
-      type: DataTypes.INTEGER,
-      field: 'company_id',
-      allowNull: false,
-    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at',
@@ -39,6 +34,16 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: {
       type: DataTypes.DATE,
       field: 'updated_at',
+    },
+    customerId: {
+      type: DataTypes.INTEGER,
+      field: 'customer_id',
+      allowNull: false,
+    },
+    companyId: {
+      type: DataTypes.INTEGER,
+      field: 'company_id',
+      allowNull: false,
     },
   }, {
     freezeTableName: true,
@@ -51,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
   // eslint-disable-next-line func-names
   Sale.associate = function (models) {
     Sale.belongsTo(models.Company, { as: 'company' });
+    Sale.belongsTo(models.Customer, { as: 'customer' });
     Sale.hasMany(models.SaleItem, { as: 'items', onDelete: 'cascade' });
   };
   return Sale;

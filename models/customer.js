@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   // eslint-disable-next-line no-unused-vars
   Customer.associate = function (models) {
-    // associations can be defined here
+    Customer.hasMany(models.Sale, { as: 'sales' });
   };
   return Customer;
 };
