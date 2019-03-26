@@ -9,18 +9,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      clientDocument: {
-        field: 'client_document',
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isCpfValid() {
-            if (!CPF.isValid(this.clientDocument)) {
-              throw new Error("It's not a valid client document");
-            }
-          },
-        },
-      },
       purchaseDate: {
         field: 'purchase_date',
         type: DataTypes.DATE,
@@ -78,7 +66,6 @@ module.exports = (sequelize, DataTypes) => {
         attributes: [
           'id',
           'cfeId',
-          'clientDocument',
           'purchaseDate',
           'total',
           'cashback',
