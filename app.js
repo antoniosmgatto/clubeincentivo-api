@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -6,12 +7,15 @@ const basicAuth = require('express-basic-auth');
 const passport = require('passport');
 const LocalAPIKeyStrategy = require('passport-localapikey').Strategy;
 const firebase = require('firebase');
+const schedule = require('node-schedule');
+const moment = require('moment');
+const { Op } = require('sequelize');
 
 const indexRouter = require('./routes/index');
 const companiesRouter = require('./routes/companies');
 const salesRouter = require('./routes/sales');
 const customersRouter = require('./routes/customers');
-const { Company, PdvToken } = require('./models');
+const { Company, PdvToken, Sale } = require('./models');
 
 const app = express();
 const basicAuthMidleware = basicAuth({
@@ -24,9 +28,7 @@ passport.use(
   new LocalAPIKeyStrategy((apikey, done) => {
     PdvToken.findOne({
       where: { token: apikey },
-      include: [
-        { model: Company, as: 'company' },
-      ],
+      include: [{ model: Company, as: 'company' }],
     }).then((pdvToken) => {
       if (!pdvToken) {
         return done(null, false);
@@ -50,11 +52,7 @@ app.use((req, res, next) => {
   if (req.path.startsWith('/adm')) {
     basicAuthMidleware(req, res, next);
   } else if (req.path.startsWith('/pdv-client')) {
-    passport.authenticate('localapikey', { session: false })(
-      req,
-      res,
-      next,
-    );
+    passport.authenticate('localapikey', { session: false })(req, res, next);
   } else {
     next();
   }
@@ -92,5 +90,16 @@ const config = {
 firebase.initializeApp(config);
 
 passport.authenticate('basic', { session: false });
+
+// cron task to clean up sales
+schedule.scheduleJob('0 * * * *', () => {
+  Sale.destroy({
+    where: {
+      customerId: null,
+      onBalance: false,
+      purchaseDate: { [Op.lte]: moment().day(-7) },
+    },
+  });
+});
 
 module.exports = app;
