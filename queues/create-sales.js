@@ -1,12 +1,13 @@
 const Queue = require('bee-queue');
 const CPF = require('@fnando/cpf/dist/node');
 const firebase = require('firebase');
+const salesFirebase = require('./sales-firebase');
 
 const {
   Company, Customer, Sale, SaleItem,
 } = require('../models');
 
-const queue = new Queue('sales', {
+const queue = new Queue('create-sales', {
   redis: {
     url: process.env.REDIS_URL,
   },
@@ -18,23 +19,6 @@ const createSale = json => Sale.create(json, {
     {
       model: SaleItem,
       as: 'items',
-    },
-  ],
-});
-
-const findSale = id => Sale.findByPk(id, {
-  include: [
-    {
-      model: SaleItem,
-      as: 'items',
-    },
-    {
-      model: Company,
-      as: 'company',
-    },
-    {
-      model: Customer,
-      as: 'customer',
     },
   ],
 });
@@ -61,31 +45,6 @@ const sendCompanyInfoToFirebase = (customer, company) => {
     });
 };
 
-const sendSaleToFirebase = (sale) => {
-  firebase
-    .database()
-    .ref(
-      `${firebaseCompanyPath(sale.customer.uid, sale.company.uid)}/sales/${
-        sale.cfeId
-      }`,
-    )
-    .update({
-      cfeId: sale.cfeId,
-      items: sale.items.map(item => ({
-        code: item.code,
-        description: item.description,
-        price: parseFloat(item.price),
-        quantity: parseFloat(item.quantity),
-      })),
-      purchaseDate: sale.purchaseDate.getTime(),
-      total: parseFloat(sale.total),
-      cashback: parseFloat(sale.cashback),
-      cashbackDate:
-        sale.cashbackDate != null ? sale.cashbackDate.getTime() : null,
-      onBalance: sale.onBalance,
-    });
-};
-
 queue.process(async (job) => {
   const document = parseClientDocument(job.data);
   findCustomer(document).then((customer) => {
@@ -104,15 +63,12 @@ queue.process(async (job) => {
         ...{ clientDocument: document, customerId: customer && customer.id },
       };
       createSale(saleJson)
-        .then((record) => {
-          if (record.customerId != null) {
-            findSale(record.id).then((sale) => {
-              sendSaleToFirebase(sale);
-            });
+        .then((sale) => {
+          if (sale.customerId != null) {
+            salesFirebase.createJob({ saleId: sale.id });
           }
-        })
-        .catch(exception => console.log(exception));
-      return true;
+          return true;
+        });
     });
   });
 });

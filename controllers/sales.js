@@ -1,4 +1,4 @@
-const salesQueue = require('../queues/sales');
+const salesQueue = require('../queues/create-sales');
 
 module.exports = {
   create(req, res) {
