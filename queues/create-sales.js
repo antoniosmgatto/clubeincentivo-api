@@ -48,28 +48,33 @@ const sendCompanyInfoToFirebase = (customer, company) => {
 queue.process(async (job) => {
   const document = parseClientDocument(job.data);
   findCustomer(document).then((customer) => {
-    const userRefFirebase = firebase
-      .database()
-      .ref(firebaseCompanyPath(customer.uid));
+    const saleJson = {
+      ...job.data,
+      ...{ clientDocument: document, customerId: customer && customer.id },
+    };
 
-    userRefFirebase.once('value', (snapshot) => {
-      if (!snapshot.exists()) {
-        Company.findByPk(job.data.companyId).then((company) => {
-          sendCompanyInfoToFirebase(customer, company);
-        });
-      }
-      const saleJson = {
-        ...job.data,
-        ...{ clientDocument: document, customerId: customer && customer.id },
-      };
-      createSale(saleJson)
-        .then((sale) => {
-          if (sale.customerId != null) {
-            salesFirebase.createJob({ saleId: sale.id });
-          }
-          return true;
-        });
-    });
+    createSale(saleJson)
+      .then((sale) => {
+        if (customer != null) {
+          // get firebase reference
+          const userRefFirebase = firebase
+            .database()
+            .ref(firebaseCompanyPath(customer.uid));
+
+          userRefFirebase.once('value', (snapshot) => {
+            // check if user exists in firebase
+            if (!snapshot.exists()) {
+              Company.findByPk(job.data.companyId).then((company) => {
+                sendCompanyInfoToFirebase(customer, company);
+              });
+            }
+          });
+
+          // schedule a job to send sale data
+          salesFirebase.createJob({ saleId: sale.id });
+        }
+        return true;
+      });
   });
 });
 
