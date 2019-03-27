@@ -48,15 +48,28 @@ const parseClientDocument = (json) => {
 // eslint-disable-next-line object-shorthand
 const findCustomer = document => Customer.findOne({ where: { document } });
 
-const sendToFirebase = (sale) => {
+const firebaseCompanyPath = (customerUid, companyUid) => `users/${customerUid}/companies/${companyUid}`;
+
+const sendCompanyInfoToFirebase = (customer, company) => {
+  firebase
+    .database()
+    .ref(firebaseCompanyPath(customer.uid, company.uid))
+    .update({
+      companyName: company.name,
+      urlLogo: company.urlLogo,
+      balance: 0.0,
+    });
+};
+
+const sendSaleToFirebase = (sale) => {
   firebase
     .database()
     .ref(
-      `users/${sale.customer.uid}/companies/${sale.company.uid}/sales/${
+      `${firebaseCompanyPath(sale.customer.uid, sale.company.uid)}/sales/${
         sale.cfeId
       }`,
     )
-    .set({
+    .update({
       cfeId: sale.cfeId,
       items: sale.items.map(item => ({
         code: item.code,
@@ -73,22 +86,40 @@ const sendToFirebase = (sale) => {
     });
 };
 
+// TODO buscar company
 queue.process(async (job) => {
   const document = parseClientDocument(job.data);
   findCustomer(document).then((customer) => {
-    const json = {
-      ...job.data,
-      ...{ clientDocument: document, customerId: customer && customer.id },
-    };
-    createSale(json).then((record) => {
-      if (record.customerId != null) {
-        findSale(record.id).then((sale) => {
-          sendToFirebase(sale);
+    const userRefFirebase = firebase
+      .database()
+      .ref(firebaseCompanyPath(customer.uid));
+
+    console.log('1');
+    userRefFirebase.once('value', (snapshot) => {
+      console.log('5555');
+      if (!snapshot.exists()) {
+        console.log('2');
+        Company.findByPk(job.data.companyId).then((company) => {
+          console.log('23');
+          sendCompanyInfoToFirebase(customer, company);
+          console.log('4');
         });
       }
-    })
-      .catch(exception => console.log(exception));
-    return true;
+      const saleJson = {
+        ...job.data,
+        ...{ clientDocument: document, customerId: customer && customer.id },
+      };
+      createSale(saleJson)
+        .then((record) => {
+          if (record.customerId != null) {
+            findSale(record.id).then((sale) => {
+              sendSaleToFirebase(sale);
+            });
+          }
+        })
+        .catch(exception => console.log(exception));
+      return true;
+    });
   });
 });
 
