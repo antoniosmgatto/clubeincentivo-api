@@ -1,6 +1,6 @@
 const Queue = require('bee-queue');
 const CPF = require('@fnando/cpf/dist/node');
-const firebase = require("firebase");
+const firebase = require('firebase');
 
 const {
   Company, Customer, Sale, SaleItem,
@@ -10,6 +10,7 @@ const queue = new Queue('sales', {
   redis: {
     url: process.env.REDIS_URL,
   },
+  removeOnSuccess: true,
 });
 
 const createSale = json => Sale.create(json, {
@@ -72,7 +73,7 @@ const sendToFirebase = (sale) => {
     });
 };
 
-queue.process((job, done) => {
+queue.process(async (job) => {
   const document = parseClientDocument(job.data);
   findCustomer(document).then((customer) => {
     const json = {
@@ -83,16 +84,17 @@ queue.process((job, done) => {
       if (record.customerId != null) {
         findSale(record.id).then((sale) => {
           sendToFirebase(sale);
-          done(null, true);
         });
       }
-    });
+    })
+      .catch(exception => console.log(exception));
+    return true;
   });
 });
 
 module.exports = {
   createJob: (json) => {
-    const job = queue.createJob(json);
+    const job = queue.createJob(json).retries(10).backoff('exponential', (6000));
     return job.save();
   },
 };
