@@ -21,6 +21,17 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      urlLogo: {
+        type: DataTypes.STRING,
+        field: 'url_logo',
+        allowNull: false,
+        validate: {
+          isUrl: {
+            args: true,
+            msg: 'Invalid url',
+          },
+        },
+      },
       uid: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -45,7 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         // eslint-disable-next-line no-unused-vars
         beforeValidate: (company, options) => {
-          company.uid = crypto.createHash('sha1').update(Math.random().toString(36)).digest('hex');
+          company.uid = crypto
+            .createHash('sha1')
+            .update(Math.random().toString(36))
+            .digest('hex');
         },
       },
       defaultScope: {
@@ -53,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
           'id',
           'name',
           'document',
+          'urlLogo',
           'uid',
           'createdAt',
           'updatedAt',
