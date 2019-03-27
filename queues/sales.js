@@ -86,7 +86,6 @@ const sendSaleToFirebase = (sale) => {
     });
 };
 
-// TODO buscar company
 queue.process(async (job) => {
   const document = parseClientDocument(job.data);
   findCustomer(document).then((customer) => {
