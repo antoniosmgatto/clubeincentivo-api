@@ -11,6 +11,7 @@ services:
       - ~/.ssh/:/root/.ssh
     ports:
       - "3000:3000"
+      - "9229:9229"
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/clubeincentivo_dev
       - ADM_PASSWD=passwd
