@@ -94,15 +94,10 @@ queue.process(async (job) => {
       .database()
       .ref(firebaseCompanyPath(customer.uid));
 
-    console.log('1');
     userRefFirebase.once('value', (snapshot) => {
-      console.log('5555');
       if (!snapshot.exists()) {
-        console.log('2');
         Company.findByPk(job.data.companyId).then((company) => {
-          console.log('23');
           sendCompanyInfoToFirebase(customer, company);
-          console.log('4');
         });
       }
       const saleJson = {
