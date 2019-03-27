@@ -1,4 +1,3 @@
-const CPF = require('@fnando/cpf/dist/node');
 const moment = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
@@ -7,11 +6,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       cfeId: {
         type: DataTypes.STRING,
+        field: 'cfe_id',
         allowNull: false,
+        unique: 'company_cfe_id_unique',
       },
       purchaseDate: {
-        field: 'purchase_date',
         type: DataTypes.DATE,
+        field: 'purchase_date',
         allowNull: false,
       },
       total: {
@@ -23,12 +24,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       cashbackDate: {
-        field: 'cashback_date',
         type: DataTypes.DATE,
+        field: 'cashback_date',
         allowNull: false,
       },
       onBalance: {
         type: DataTypes.BOOLEAN,
+        field: 'on_balance',
+        defaultValue: false,
+      },
+      clientDocument: {
+        type: DataTypes.STRING,
+        field: 'client_document',
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -41,12 +49,13 @@ module.exports = (sequelize, DataTypes) => {
       customerId: {
         type: DataTypes.INTEGER,
         field: 'customer_id',
-        allowNull: false,
+        allowNull: true,
       },
       companyId: {
         type: DataTypes.INTEGER,
         field: 'company_id',
         allowNull: false,
+        unique: 'company_cfe_id_unique',
       },
     },
     {
@@ -56,11 +65,11 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         // eslint-disable-next-line no-unused-vars
         beforeValidate: (sale, options) => {
-          if (sale.total != null) {
-            sale.cashback = sale.total * 0.10; // only 10% for now
+          if (sale.onBalance === false) {
+            sale.cashback = sale.total * 0.1; // only 10% for now
             sale.cashbackDate = moment().day(7); // cashback only after 7 days for now
           }
-        }
+        },
       },
       defaultScope: {
         attributes: [
