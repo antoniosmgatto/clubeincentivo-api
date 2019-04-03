@@ -84,6 +84,7 @@ module.exports = (sequelize, DataTypes) => {
   // eslint-disable-next-line no-unused-vars
   Customer.associate = function (models) {
     Customer.hasMany(models.Sale, { as: 'sales' });
+    Customer.hasMany(models.Transaction, { as: 'transactions' });
   };
   return Customer;
 };

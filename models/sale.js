@@ -91,6 +91,13 @@ module.exports = (sequelize, DataTypes) => {
   Sale.associate = function (models) {
     Sale.belongsTo(models.Company, { as: 'company' });
     Sale.belongsTo(models.Customer, { as: 'customer' });
+    Sale.hasOne(models.Transaction, {
+      foreignKey: 'transactionable_id',
+      constraints: false,
+      scope: {
+        transactionable: 'sale',
+      },
+    });
     Sale.hasMany(models.SaleItem, { as: 'items', onDelete: 'cascade' });
   };
   return Sale;
