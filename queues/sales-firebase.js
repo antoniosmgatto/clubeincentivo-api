@@ -12,7 +12,7 @@ const queue = new Queue('sales-firebase', {
   removeOnSuccess: true,
 });
 
-const findSale = id => Sale.findByPk(id, {
+const findSale = id => Sale.findById(id, {
   include: [
     {
       model: SaleItem,
@@ -29,9 +29,11 @@ const findSale = id => Sale.findByPk(id, {
   ],
 });
 
-const firebaseCompanyPath = sale => `users/${sale.customer.uid}/companies/${sale.company.uid}/sales/${sale.cfeId}`;
+const salesPath = sale => `users/${sale.customer.uid}/companies/${sale.company.uid}/sales/${
+  sale.cfeId
+}`;
 
-const payload = sale => ({
+const salePayload = sale => ({
   cfeId: sale.cfeId,
   items: sale.items.map(item => ({
     code: item.code,
@@ -47,20 +49,37 @@ const payload = sale => ({
   onBalance: sale.onBalance,
 });
 
-const sendSaleToFirebase = (sale) => {
+const saveOnFirebase = (path, json) => {
   firebase
     .database()
-    .ref(`${firebaseCompanyPath(sale)}`)
-    .update(payload(sale));
+    .ref(path)
+    .update(json);
 };
 
 queue.process(async (job) => {
-  findSale(job.data.saleId).then(sale => sendSaleToFirebase(sale));
+  const sale = await findSale(job.data.saleId);
+  const path = salesPath(sale);
+  const payload = await salePayload(sale);
+  saveOnFirebase(path, payload);
 });
 
 module.exports = {
   createJob: (json) => {
-    const job = queue.createJob(json).retries(10).backoff('exponential', (6000));
+    const job = queue
+      .createJob(json)
+      .retries(10)
+      .backoff('exponential', 6000);
     return job.save();
   },
+  salesPath,
+  salePayload,
+  statementPayload: transaction => ({
+    created_at: transaction.created_at.getTime(),
+    tag: transaction.tag,
+    value: transaction.value,
+  }),
+  statementPath: transaction => `users/${transaction.customer.id}/companies/${
+    transaction.company.id
+  }/transactions/${transaction.guid}`,
+  saveOnFirebase,
 };

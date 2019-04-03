@@ -10,12 +10,21 @@ const firebase = require('firebase');
 const schedule = require('node-schedule');
 const moment = require('moment');
 const { Op } = require('sequelize');
+const salesFirebase = require('./queues/sales-firebase');
 
 const indexRouter = require('./routes/index');
 const companiesRouter = require('./routes/companies');
 const salesRouter = require('./routes/sales');
 const customersRouter = require('./routes/customers');
-const { Company, PdvToken, Sale } = require('./models');
+const {
+  Company,
+  Customer,
+  PdvToken,
+  Sale,
+  SaleItem,
+  Transaction,
+  sequelize,
+} = require('./models');
 
 const app = express();
 const basicAuthMidleware = basicAuth({
@@ -92,13 +101,77 @@ firebase.initializeApp(config);
 passport.authenticate('basic', { session: false });
 
 // cron task to clean up sales
-schedule.scheduleJob('0 * * * *', () => {
+schedule.scheduleJob('0 * * * * *', () => {
   Sale.destroy({
     where: {
       customerId: null,
       onBalance: false,
       purchaseDate: { [Op.lte]: moment().day(-7) },
     },
+  });
+});
+
+// cron task to lauch cashback to customers
+schedule.scheduleJob('0 * * * * *', async () => {
+  const dbTransaction = await sequelize.transaction();
+  const sales = await Sale.findAll(
+    {
+      attributes: ['id'],
+      where: {
+        customerId: {
+          [Op.not]: null,
+        },
+        onBalance: false,
+        cashbackDate: { [Op.lte]: moment() },
+      },
+    },
+  );
+
+  sales.forEach(async (saleFound) => {
+    const sale = await Sale.findById(saleFound.id, {
+      include: [
+        { model: SaleItem, as: 'items' },
+        { model: Customer, as: 'customer' },
+        { model: Company, as: 'company' },
+      ],
+      transaction: dbTransaction,
+    });
+
+    const saleUpdated = await sale.update(
+      { onBalance: true },
+      { transaction: dbTransaction },
+    );
+
+    const transactionSaved = await Transaction.create(
+      {
+        tag: 'CASHBACK',
+        value: saleUpdated.cashback,
+        customerId: sale.customer.id,
+        companyId: sale.company.id,
+        transactionable: 'Sale',
+        transactionableId: saleUpdated.id,
+      },
+      { transaction: dbTransaction },
+    );
+
+    const transaction = await Transaction.findById(transactionSaved.id, {
+      include: [
+        { model: Customer, as: 'customer' },
+        { model: Company, as: 'company' },
+      ],
+      transaction: dbTransaction,
+    });
+
+    const salePath = salesFirebase.salesPath(sale);
+    const saleJson = salesFirebase.salePayload(saleUpdated);
+    salesFirebase.saveOnFirebase(salePath, saleJson);
+
+    // save the transaction on firebase
+    const statementPath = salesFirebase.statementPath(transaction);
+    const transactionJson = salesFirebase.statementPayload(transaction);
+    salesFirebase.saveOnFirebase(statementPath, transactionJson);
+
+    await dbTransaction.commit();
   });
 });
 
