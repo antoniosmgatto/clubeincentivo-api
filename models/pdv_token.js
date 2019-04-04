@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const moment = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
   const PdvToken = sequelize.define(
@@ -30,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         // eslint-disable-next-line no-unused-vars
         beforeValidate: (pdvToken, options) => {
           pdvToken.token = crypto.createHash('sha1').update(Math.random().toString(36)).digest('hex');
-          pdvToken.createdAt =  new Date();
+          pdvToken.createdAt =  moment();
         },
       },
       defaultScope: {
