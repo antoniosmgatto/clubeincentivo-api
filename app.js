@@ -101,7 +101,7 @@ firebase.initializeApp(config);
 passport.authenticate('basic', { session: false });
 
 // cron task to clean up sales
-schedule.scheduleJob('0 * * * * *', () => {
+schedule.scheduleJob('*/14 * * * *', () => {
   Sale.destroy({
     where: {
       customerId: null,
@@ -112,20 +112,18 @@ schedule.scheduleJob('0 * * * * *', () => {
 });
 
 // cron task to lauch cashback to customers
-schedule.scheduleJob('0 * * * * *', async () => {
+schedule.scheduleJob('*/10 * * * *', async () => {
   const dbTransaction = await sequelize.transaction();
-  const sales = await Sale.findAll(
-    {
-      attributes: ['id'],
-      where: {
-        customerId: {
-          [Op.not]: null,
-        },
-        onBalance: false,
-        cashbackDate: { [Op.lte]: moment() },
+  const sales = await Sale.findAll({
+    attributes: ['id'],
+    where: {
+      customerId: {
+        [Op.not]: null,
       },
+      onBalance: false,
+      cashbackDate: { [Op.lte]: moment() },
     },
-  );
+  });
 
   sales.forEach(async (saleFound) => {
     const sale = await Sale.findByPk(saleFound.id, {
