@@ -19,7 +19,7 @@ module.exports = {
   },
   show(req, res) {
     const { id } = req.params;
-    return Company.findById(id)
+    return Company.findByPk(id)
       .then((company) => {
         if (company == null) return res.status(404).end();
         return res.json(company);
@@ -28,7 +28,7 @@ module.exports = {
   },
   update(req, res) {
     const { id } = req.params;
-    return Company.findById(id)
+    return Company.findByPk(id)
       .then((company) => {
         if (company == null) return res.status(404).end();
         return company.update(req.body);
@@ -41,7 +41,7 @@ module.exports = {
   },
   delete(req, res) {
     const { id } = req.params;
-    return Company.findById(id)
+    return Company.findByPk(id)
       .then((company) => {
         if (company == null) return res.status(404).end();
         return company.destroy();

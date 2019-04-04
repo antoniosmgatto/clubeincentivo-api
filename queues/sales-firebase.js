@@ -12,7 +12,7 @@ const queue = new Queue('sales-firebase', {
   removeOnSuccess: true,
 });
 
-const findSale = id => Sale.findById(id, {
+const findSale = id => Sale.findByPk(id, {
   include: [
     {
       model: SaleItem,

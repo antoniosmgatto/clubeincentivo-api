@@ -17,7 +17,7 @@ module.exports = {
   },
   delete(req, res) {
     const { id } = req.params;
-    return PdvToken.findById(id)
+    return PdvToken.findByPk(id)
       .then((pdvToken) => {
         if (pdvToken == null) return res.status(404).end();
         return pdvToken.destroy();

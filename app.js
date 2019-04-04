@@ -128,7 +128,7 @@ schedule.scheduleJob('0 * * * * *', async () => {
   );
 
   sales.forEach(async (saleFound) => {
-    const sale = await Sale.findById(saleFound.id, {
+    const sale = await Sale.findByPk(saleFound.id, {
       include: [
         { model: SaleItem, as: 'items' },
         { model: Customer, as: 'customer' },
@@ -154,7 +154,7 @@ schedule.scheduleJob('0 * * * * *', async () => {
       { transaction: dbTransaction },
     );
 
-    const transaction = await Transaction.findById(transactionSaved.id, {
+    const transaction = await Transaction.findByPk(transactionSaved.id, {
       include: [
         { model: Customer, as: 'customer' },
         { model: Company, as: 'company' },
