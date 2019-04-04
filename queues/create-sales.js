@@ -32,12 +32,13 @@ const parseClientDocument = (json) => {
 // eslint-disable-next-line object-shorthand
 const findCustomer = document => Customer.findOne({ where: { document } });
 
-const firebaseCompanyPath = (customerUid, companyUid) => `users/${customerUid}/companies/${companyUid}`;
+const firebaseCompanyPath = (customerGuid, companyGuid) =>
+  `users/${customerGuid}/companies/${companyGuid}`;
 
 const sendCompanyInfoToFirebase = (customer, company) => {
   firebase
     .database()
-    .ref(firebaseCompanyPath(customer.uid, company.uid))
+    .ref(firebaseCompanyPath(customer.guid, company.guid))
     .update({
       companyName: company.name,
       urlLogo: company.urlLogo,
@@ -59,7 +60,7 @@ queue.process(async (job) => {
           // get firebase reference
           const userRefFirebase = firebase
             .database()
-            .ref(firebaseCompanyPath(customer.uid));
+            .ref(firebaseCompanyPath(customer.guid));
 
           userRefFirebase.once('value', (snapshot) => {
             // check if user exists in firebase

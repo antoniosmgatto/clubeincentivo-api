@@ -1,5 +1,6 @@
 const CPF = require('@fnando/cpf/dist/node');
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+const uuid = require('uuid/v1');
 
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
@@ -60,12 +61,12 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      uid: {
+      guid: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
           args: true,
-          msg: 'UID already in use.',
+          msg: 'GUID already in use.',
         },
       },
     },

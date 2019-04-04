@@ -1,4 +1,5 @@
 const moment = require('moment');
+const uuid = require('uuid/v1');
 
 module.exports = (sequelize, DataTypes) => {
   const Sale = sequelize.define(
@@ -38,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         field: 'client_document',
         allowNull: true,
       },
+      guid: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          args: true,
+          msg: 'GUID already in use.',
+        },
+      },
       createdAt: {
         type: DataTypes.DATE,
         field: 'created_at',
@@ -69,6 +78,9 @@ module.exports = (sequelize, DataTypes) => {
             sale.cashback = sale.total * 0.1; // only 10% for now
             sale.cashbackDate = moment().day(7); // cashback only after 7 days for now
           }
+          if (sale.id == null) {
+            sale.guid = uuid();
+          }
         },
       },
       defaultScope: {
@@ -77,6 +89,8 @@ module.exports = (sequelize, DataTypes) => {
           'cfeId',
           'purchaseDate',
           'total',
+          'clientDocument',
+          'guid',
           'cashback',
           'cashbackDate',
           'onBalance',

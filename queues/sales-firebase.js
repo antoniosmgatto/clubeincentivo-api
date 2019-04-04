@@ -29,8 +29,8 @@ const findSale = id => Sale.findById(id, {
   ],
 });
 
-const salesPath = sale => `users/${sale.customer.uid}/companies/${sale.company.uid}/sales/${
-  sale.cfeId
+const salesPath = sale => `users/${sale.customer.guid}/companies/${sale.company.guid}/sales/${
+  sale.guid
 }`;
 
 const salePayload = sale => ({
@@ -78,8 +78,6 @@ module.exports = {
     tag: transaction.tag,
     value: transaction.value,
   }),
-  statementPath: transaction => `users/${transaction.customer.id}/companies/${
-    transaction.company.id
-  }/transactions/${transaction.guid}`,
+  statementPath: transaction => `users/${transaction.customer.guid}/companies/${transaction.company.guid}/transactions/${transaction.guid}`,
   saveOnFirebase,
 };

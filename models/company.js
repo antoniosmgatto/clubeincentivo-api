@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 const CNPJ = require('@fnando/cnpj/dist/node');
-const crypto = require('crypto');
+const uuid = require('uuid/v1');
 
 module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define(
@@ -32,12 +32,12 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      uid: {
+      guid: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
           args: true,
-          msg: 'UID already in use.',
+          msg: 'GUID already in use.',
         },
       },
       createdAt: {
@@ -56,10 +56,9 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         // eslint-disable-next-line no-unused-vars
         beforeValidate: (company, options) => {
-          company.uid = crypto
-            .createHash('sha1')
-            .update(Math.random().toString(36))
-            .digest('hex');
+          if (company.id == null) {
+            company.guid = uuid();
+          }
         },
       },
       defaultScope: {
@@ -68,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
           'name',
           'document',
           'urlLogo',
-          'uid',
+          'guid',
           'createdAt',
           'updatedAt',
         ],

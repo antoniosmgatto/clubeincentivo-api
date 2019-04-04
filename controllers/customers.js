@@ -12,7 +12,7 @@ module.exports = {
       .then((customer) => {
         firebase
           .database()
-          .ref(`users/${customer.uid}/info`)
+          .ref(`users/${customer.guid}/info`)
           .set({
             fullName: customer.fullName,
             email: customer.email,
