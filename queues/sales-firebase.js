@@ -2,7 +2,7 @@ const Queue = require('bee-queue');
 const firebase = require('firebase');
 
 const {
-  Company, Customer, Sale, SaleItem,
+  Company, Customer, Sale, SaleItem, Transaction,
 } = require('../models');
 
 const queue = new Queue('sales-firebase', {
@@ -49,11 +49,23 @@ const salePayload = sale => ({
   onBalance: sale.onBalance,
 });
 
+const companyPath = (customerGuid, companyGuid) => `users/${customerGuid}/companies/${companyGuid}`;
+
+const companyPayload = (company, balance) => ({
+  companyName: company.name,
+  urlLogo: company.urlLogo,
+  balance,
+});
+
 const saveOnFirebase = (path, json) => {
   firebase
     .database()
     .ref(path)
     .update(json);
+};
+
+const customerBalance = (customerId, companyId) => {
+  Transaction.sum('value', { where: { customer_id: customerId, company_id: companyId } });
 };
 
 queue.process(async (job) => {
@@ -82,4 +94,7 @@ module.exports = {
     transaction.company.guid
   }/transactions/${transaction.guid}`,
   saveOnFirebase,
+  companyPath,
+  companyPayload,
+  customerBalance,
 };
