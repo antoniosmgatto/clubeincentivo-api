@@ -112,8 +112,7 @@ schedule.scheduleJob('*/14 * * * *', () => {
 });
 
 // cron task to lauch cashback to customers
-schedule.scheduleJob('*/10 * * * *', async () => {
-  const dbTransaction = await sequelize.transaction();
+schedule.scheduleJob('*/2 * * * *', async () => {
   const sales = await Sale.findAll({
     attributes: ['id'],
     where: {
@@ -126,48 +125,69 @@ schedule.scheduleJob('*/10 * * * *', async () => {
   });
 
   sales.forEach(async (saleFound) => {
-    const sale = await Sale.findByPk(saleFound.id, {
-      include: [
-        { model: SaleItem, as: 'items' },
-        { model: Customer, as: 'customer' },
-        { model: Company, as: 'company' },
-      ],
-      transaction: dbTransaction,
-    });
+    let dbTransaction;
+    try {
+      dbTransaction = await sequelize.transaction();
+      const sale = await Sale.findByPk(saleFound.id, {
+        include: [
+          { model: SaleItem, as: 'items' },
+          { model: Customer, as: 'customer' },
+          { model: Company, as: 'company' },
+        ],
+        transaction: dbTransaction,
+      });
 
-    const saleUpdated = await sale.update(
-      { onBalance: true },
-      { transaction: dbTransaction },
-    );
+      const saleUpdated = await sale.update(
+        { onBalance: true },
+        { transaction: dbTransaction },
+      );
 
-    const transactionSaved = await Transaction.create(
-      {
-        tag: 'CASHBACK',
-        value: saleUpdated.cashback,
-        customerId: sale.customer.id,
-        companyId: sale.company.id,
-        transactionable: 'Sale',
-        transactionableId: saleUpdated.id,
-      },
-      { transaction: dbTransaction },
-    );
+      const transactionSaved = await Transaction.create(
+        {
+          tag: 'CASHBACK',
+          value: saleUpdated.cashback,
+          customerId: sale.customer.id,
+          companyId: sale.company.id,
+          transactionable: 'Sale',
+          transactionableId: saleUpdated.id,
+        },
+        { transaction: dbTransaction },
+      );
 
-    const transaction = await Transaction.findByPk(transactionSaved.id, {
-      include: [
-        { model: Customer, as: 'customer' },
-        { model: Company, as: 'company' },
-      ],
-      transaction: dbTransaction,
-    });
+      const transaction = await Transaction.findByPk(transactionSaved.id, {
+        include: [
+          { model: Customer, as: 'customer' },
+          { model: Company, as: 'company' },
+        ],
+        transaction: dbTransaction,
+      });
+      const salePath = salesFirebase.salesPath(sale);
+      const saleJson = salesFirebase.salePayload(saleUpdated);
+      salesFirebase.saveOnFirebase(salePath, saleJson);
 
-    const salePath = salesFirebase.salesPath(sale);
-    const saleJson = salesFirebase.salePayload(saleUpdated);
-    salesFirebase.saveOnFirebase(salePath, saleJson);
+      // save the transaction on firebase
+      const statementPath = salesFirebase.statementPath(transaction);
+      const transactionJson = salesFirebase.statementPayload(transaction);
+      salesFirebase.saveOnFirebase(statementPath, transactionJson);
 
-    // save the transaction on firebase
-    const statementPath = salesFirebase.statementPath(transaction);
-    const transactionJson = salesFirebase.statementPayload(transaction);
-    salesFirebase.saveOnFirebase(statementPath, transactionJson);
+      // save custom balance
+      const companyPath = await salesFirebase.companyPath(
+        sale.customer.guid,
+        sale.company.guid,
+      );
+      const customerBalance = await salesFirebase.customerBalance(
+        sale.customer.id,
+        sale.company.id,
+      );
+      const companyJson = salesFirebase.companyPayload(
+        sale.company,
+        customerBalance,
+      );
+      salesFirebase.saveOnFirebase(companyPath, companyJson);
+      dbTransaction.commit();
+    } catch (err) {
+      if (err) await dbTransaction.rollback();
+    }
   });
 });
 
