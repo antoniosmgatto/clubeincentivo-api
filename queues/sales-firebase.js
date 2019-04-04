@@ -76,8 +76,10 @@ module.exports = {
   statementPayload: transaction => ({
     created_at: transaction.created_at.getTime(),
     tag: transaction.tag,
-    value: transaction.value,
+    value: parseFloat(transaction.value),
   }),
-  statementPath: transaction => `users/${transaction.customer.guid}/companies/${transaction.company.guid}/transactions/${transaction.guid}`,
+  statementPath: transaction => `users/${transaction.customer.guid}/companies/${
+    transaction.company.guid
+  }/transactions/${transaction.guid}`,
   saveOnFirebase,
 };
