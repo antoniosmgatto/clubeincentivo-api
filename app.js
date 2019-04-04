@@ -170,8 +170,6 @@ schedule.scheduleJob('0 * * * * *', async () => {
     const statementPath = salesFirebase.statementPath(transaction);
     const transactionJson = salesFirebase.statementPayload(transaction);
     salesFirebase.saveOnFirebase(statementPath, transactionJson);
-
-    await dbTransaction.commit();
   });
 });
 
