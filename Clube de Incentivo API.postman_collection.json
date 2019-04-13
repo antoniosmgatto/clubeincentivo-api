@@ -6,13 +6,49 @@
 	},
 	"item": [
 		{
-			"name": "Sales list",
+			"name": "Customer create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{ADM_AUTH}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Antonio Gatto\",\n  \"document\": \"054.017.429-75\",\n  \"email\": \"antonio.gatto@gmail.com\",\n  \"phoneNumber\": \"41984226199\",\n  \"birthday\": \"1989-11-30\",\n  \"uid\": \"meuuid\"\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/customers",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies list",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{ADM_AUTH}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -20,18 +56,256 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{API_URL}}/sales?page=1",
+					"raw": "{{API_URL}}/adm/companies",
 					"host": [
 						"{{API_URL}}"
 					],
 					"path": [
-						"sales"
+						"adm",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{ADM_AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sìrene\",\n  \"document\": \"17.158.480/0001-16\",\n  \"urlLogo\": \"http://3.bp.blogspot.com/-6KTdDFxynrQ/Um8-ulwO_SI/AAAAAAAAacQ/VaW5l4Ekkv0/s1600/Os-Vingadores-em-png-queroimagem-Cei%C3%A7a-Crispim+(13).png\"\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies show",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{ADM_AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n \t\n }"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1"
 					],
 					"query": [
 						{
-							"key": "page",
-							"value": "1"
+							"key": "",
+							"value": ""
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{ADM_AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Company 2\",\n  \"document\": \"19.393.471/0001-35\",\n  \"uid\": \"123\"\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Companies delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{ADM_AUTH}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PDV Tokens",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{ADM_AUTH}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1/pdv-tokens",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1",
+						"pdv-tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PDV Tokens create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{ADM_AUTH}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Token Teste\"\n}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1/pdv-tokens",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1",
+						"pdv-tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PDV Tokens delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{ADM_AUTH}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {}"
+				},
+				"url": {
+					"raw": "{{API_URL}}/adm/companies/1/pdv-tokens/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"adm",
+						"companies",
+						"1",
+						"pdv-tokens",
+						"1"
 					]
 				}
 			},
@@ -49,99 +323,22 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"cfeId\": \"CFe351811365640600019859000527528013297\",\n  \"clientDocument\": \"40741221896\",\n  \"purchaseDate\": \"2018-11-01T11:56:56\",\n  \"total\": 18,\n  \"items\": [\n    {\n      \"code\": \"1016\",\n      \"description\": \"FISH   CHIPS GRANDE\",\n      \"quantity\": 1,\n      \"price\": 17.99\n    },\n    {\n      \"code\": \"1005\",\n      \"description\": \"MOLHO BARBECUE\",\n      \"quantity\": 1,\n      \"price\": 0.01\n    }\n  ]\n}"
+					"raw": "{\n  \"cfeId\": \"CFe3518113656400001859005758131\",\n  \"clientDocument\": \"05401742975\",\n  \"purchaseDate\": \"2018-11-01T11:56:56\",\n  \"total\": 20,\n  \"items\": [\n    {\n      \"code\": \"1016\",\n      \"description\": \"FISH   CHIPS GRANDE\",\n      \"quantity\": 1,\n      \"price\": 17.99\n    },\n    {\n      \"code\": \"1005\",\n      \"description\": \"MOLHO BARBECUE\",\n      \"quantity\": 1,\n      \"price\": 0.01\n    }\n  ]\n}"
 				},
 				"url": {
-					"raw": "{{API_URL}}/sales",
+					"raw": "{{API_URL}}/pdv-client/sales?apikey={{PDV_CLIENT_API_TOKEN}}",
 					"host": [
 						"{{API_URL}}"
 					],
 					"path": [
+						"pdv-client",
 						"sales"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sales show",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": " {\n \t\n }"
-				},
-				"url": {
-					"raw": "{{API_URL}}/sales/1",
-					"host": [
-						"{{API_URL}}"
 					],
-					"path": [
-						"sales",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sale update",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"cfId\": \"002\",\n    \"clientDocument\": \"05401742975\",\n    \"purchaseDate\": \"2019-01-31 18:00:00\",\n    \"total\": 10.0,\n    \"items\" : [\n    \t{\n    \t\t\"code\": \"001\",\n    \t\t\"description\": \"Item 1\",\n    \t\t\"quantity\": 1.0,\n    \t\t\"price\": 1.0\n    \t}\n    ]\n}"
-				},
-				"url": {
-					"raw": "{{API_URL}}/sales/6",
-					"host": [
-						"{{API_URL}}"
-					],
-					"path": [
-						"sales",
-						"6"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Sales delete",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": " {}"
-				},
-				"url": {
-					"raw": "{{API_URL}}/sales/4",
-					"host": [
-						"{{API_URL}}"
-					],
-					"path": [
-						"sales",
-						"4"
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{{PDV_CLIENT_API_TOKEN}}"
+						}
 					]
 				}
 			},
